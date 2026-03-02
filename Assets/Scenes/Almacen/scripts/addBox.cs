@@ -2,85 +2,60 @@ using UnityEngine;
 
 public class addBox : MonoBehaviour
 {
-    [Header("Prefab to create (will be controlled after instantiation)")]
-    [SerializeField] private GameObject prefabToShowHide;
-
-    [Header("Where to spawn it")]
     [SerializeField] private Transform spawnPoint;
 
-    [Header("Default state")]
-    [SerializeField] private bool visibleByDefault = false;
+    private GameObject carriedBox;
 
-    [Header("Runtime state (editable in Inspector during Play Mode)")]
-    [SerializeField] private bool isVisible = false;
-
-    [Header("Touch box to change visibility")]
-    [SerializeField] private bool changeWhenTouchingBox = true;
-    [SerializeField] private string boxTag = "Box";
-    [SerializeField] private bool toggleOnTouch = true;   
-    [SerializeField] private bool setVisibleOnTouch = true;
-
-    private GameObject spawnedInstance;
-    private MeshRenderer[] spawnedRenderers;
- 
+    public bool HasBox => carriedBox != null;
 
     void Awake()
     {
         if (spawnPoint == null)
             spawnPoint = transform;
-
-        isVisible = visibleByDefault;
-
-        EnsureSpawned();
-        ApplyVisibility();
     }
 
-    void Update()
+    public bool Pickup(GameObject box)
     {
-  
-        ApplyVisibility();
-    }
+        if (carriedBox != null) return false;
+        if (box == null) return false;
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (!changeWhenTouchingBox) return;
-        if (!other.CompareTag(boxTag)) return;
+        carriedBox = box;
 
-        if (toggleOnTouch) isVisible = !isVisible;
-        else isVisible = setVisibleOnTouch;
-
-        EnsureSpawned();
-        ApplyVisibility();
-    }
-
-    private void EnsureSpawned()
-    {
-        if (spawnedInstance != null) return;
-
-        if (prefabToShowHide == null)
+        Rigidbody rb = carriedBox.GetComponent<Rigidbody>();
+        if (rb != null)
         {
-            Debug.LogWarning($"{nameof(boxspawner)}: prefabToShowHide is not assigned.", this);
-            return;
+            rb.isKinematic = true;
+            rb.useGravity = false;
         }
-        Vector3 spawnedPosition = new Vector3( spawnPoint.position.x, spawnPoint.position.y-0.28f, spawnPoint.position.z);
-        spawnedInstance = Instantiate(prefabToShowHide, spawnedPosition, spawnPoint.rotation);
-        spawnedInstance.name = prefabToShowHide.name + " (Spawned)";
 
-      
-        spawnedRenderers = spawnedInstance.GetComponentsInChildren<MeshRenderer>(true);
+        Collider col = carriedBox.GetComponent<Collider>();
+        if (col != null) col.enabled = false;
 
-        if (spawnedRenderers == null || spawnedRenderers.Length == 0)
-            Debug.LogWarning($"{nameof(boxspawner)}: Spawned prefab has no MeshRenderer components.", spawnedInstance);
+        carriedBox.transform.SetParent(spawnPoint, true);
+        carriedBox.transform.localPosition = Vector3.zero;
+        carriedBox.transform.localRotation = Quaternion.identity;
+
+        return true;
     }
 
-    private void ApplyVisibility()
+    public void Drop(Vector3 worldPosition)
     {
-        if (spawnedInstance == null || spawnedRenderers == null) return;
+        if (carriedBox == null) return;
 
-        for (int i = 0; i < spawnedRenderers.Length; i++)
+        carriedBox.transform.SetParent(null, true);
+        carriedBox.transform.position = worldPosition;
+
+        Rigidbody rb = carriedBox.GetComponent<Rigidbody>();
+        if (rb != null)
         {
-            if (spawnedRenderers[i] != null)
-                spawnedRenderers[i].enabled = isVisible;
+            rb.isKinematic = true;
+            rb.useGravity = false;
         }
+
+        Collider col = carriedBox.GetComponent<Collider>();
+        if (col != null) col.enabled = true;
+
+        carriedBox = null;
     }
 }
+
