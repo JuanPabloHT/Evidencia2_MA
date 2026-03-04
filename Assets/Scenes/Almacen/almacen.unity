@@ -980,6 +980,70 @@ Transform:
   - {fileID: 1058004485}
   m_Father: {fileID: 1255761852}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &57573233
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 57573234}
+  - component: {fileID: 57573235}
+  - component: {fileID: 57573236}
+  m_Layer: 0
+  m_Name: DropZone_2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &57573234
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 57573233}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 460.56, y: 0, z: 1205.09}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &57573235
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 57573233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eea5f7233ef5545009855e426b8ecd3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DropZone
+  maxStackHeight: 5
+  boxHeight: 0.6
+  stackStep: {x: 2.5, y: 0, z: 0}
+--- !u!114 &57573236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 57573233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a344f0b194f7154d8538c1e6dfa4714, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BoxStacking
+  numberOfBoxes: 0
+  maxNumberOfBoxes: 5
+  positionOffset: 0.6
+  initialVerticalPosition: 0.3
 --- !u!1001 &64216959
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1580,6 +1644,70 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1041900664406802376, guid: 55d315f00f5f7da43a49b8f2ee183991, type: 3}
   m_PrefabInstance: {fileID: 74699095}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &78216087
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 78216088}
+  - component: {fileID: 78216089}
+  - component: {fileID: 78216090}
+  m_Layer: 0
+  m_Name: DropZone_3
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &78216088
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 78216087}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 449.8, y: 0, z: 1215.1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &78216089
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 78216087}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eea5f7233ef5545009855e426b8ecd3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DropZone
+  maxStackHeight: 5
+  boxHeight: 0.6
+  stackStep: {x: 2.5, y: 0, z: 0}
+--- !u!114 &78216090
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 78216087}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a344f0b194f7154d8538c1e6dfa4714, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BoxStacking
+  numberOfBoxes: 0
+  maxNumberOfBoxes: 5
+  positionOffset: 0.6
+  initialVerticalPosition: 0.3
 --- !u!1001 &86330499
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6137,7 +6265,12 @@ MonoBehaviour:
   boxPrefab: {fileID: 4627126349435993535, guid: 6d95890441b32cc4a80da8ee4d74d941, type: 3}
   montacargasPrefab: {fileID: 2610398826579201994, guid: 117232bbc0f6d894c9ba358b2346d937, type: 3}
   nMontacargas: 5
-  dropZone: {fileID: 2050804758}
+  dropZones:
+  - {fileID: 2050804758}
+  - {fileID: 623892730}
+  - {fileID: 57573235}
+  - {fileID: 78216089}
+  - {fileID: 1706819918}
 --- !u!1001 &285620816
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14403,6 +14536,70 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1041900664406802376, guid: 55d315f00f5f7da43a49b8f2ee183991, type: 3}
   m_PrefabInstance: {fileID: 623048008}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &623892728
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 623892729}
+  - component: {fileID: 623892730}
+  - component: {fileID: 623892731}
+  m_Layer: 0
+  m_Name: DropZone_1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &623892729
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 623892728}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 474.02, y: 0, z: 1215.02}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &623892730
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 623892728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eea5f7233ef5545009855e426b8ecd3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DropZone
+  maxStackHeight: 5
+  boxHeight: 0.6
+  stackStep: {x: 2.5, y: 0, z: 0}
+--- !u!114 &623892731
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 623892728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a344f0b194f7154d8538c1e6dfa4714, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BoxStacking
+  numberOfBoxes: 0
+  maxNumberOfBoxes: 5
+  positionOffset: 0.6
+  initialVerticalPosition: 0.3
 --- !u!1001 &631628949
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -30679,7 +30876,7 @@ Transform:
   m_GameObject: {fileID: 1255761851}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 459.88, y: -0.26, z: 1239}
+  m_LocalPosition: {x: 458, y: -0.26, z: 1238.5}
   m_LocalScale: {x: 0.71975, y: 1.9794, z: 2.0825083}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -43292,6 +43489,70 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1041900664406802376, guid: 55d315f00f5f7da43a49b8f2ee183991, type: 3}
   m_PrefabInstance: {fileID: 1704032156}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1706819916
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1706819917}
+  - component: {fileID: 1706819918}
+  - component: {fileID: 1706819919}
+  m_Layer: 0
+  m_Name: DropZone_4
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1706819917
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1706819916}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 445.3, y: 0, z: 1208.3}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1706819918
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1706819916}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eea5f7233ef5545009855e426b8ecd3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DropZone
+  maxStackHeight: 5
+  boxHeight: 0.6
+  stackStep: {x: 2.5, y: 0, z: 0}
+--- !u!114 &1706819919
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1706819916}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a344f0b194f7154d8538c1e6dfa4714, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BoxStacking
+  numberOfBoxes: 0
+  maxNumberOfBoxes: 5
+  positionOffset: 0.6
+  initialVerticalPosition: 0.3
 --- !u!1001 &1710860276
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -44646,10 +44907,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c79b66bca1d846feb53d976531bb980, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SimulationManager
-  dropZone: {fileID: 2050804758}
-  maxTimeSeconds: 180
-  cellSize: 1
-  boxTag: Box
+  maxExecutionTime: 120
+  remainingBoxTag: Box
+  stackedBoxTag: Stacked
+  stopPlayModeWhenFinished: 1
 --- !u!4 &1744293742
 Transform:
   m_ObjectHideFlags: 0
@@ -53230,8 +53491,9 @@ GameObject:
   m_Component:
   - component: {fileID: 2050804757}
   - component: {fileID: 2050804758}
+  - component: {fileID: 2050804759}
   m_Layer: 0
-  m_Name: Drop point
+  m_Name: DropZone_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -53245,13 +53507,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2050804756}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.60068846, z: -0, w: 0.79948324}
-  m_LocalPosition: {x: 463.6, y: 0, z: 1213.8}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 486.71, y: 0, z: 1214.49}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: -73.838, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2050804758
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -53267,6 +53529,22 @@ MonoBehaviour:
   maxStackHeight: 5
   boxHeight: 0.6
   stackStep: {x: 2, y: 0, z: 0}
+--- !u!114 &2050804759
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2050804756}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a344f0b194f7154d8538c1e6dfa4714, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BoxStacking
+  numberOfBoxes: 0
+  maxNumberOfBoxes: 5
+  positionOffset: 0.6
+  initialVerticalPosition: 0.3
 --- !u!1001 &2053593725
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -55852,3 +56130,7 @@ SceneRoots:
   - {fileID: 719583168}
   - {fileID: 2050804757}
   - {fileID: 1744293742}
+  - {fileID: 623892729}
+  - {fileID: 57573234}
+  - {fileID: 78216088}
+  - {fileID: 1706819917}

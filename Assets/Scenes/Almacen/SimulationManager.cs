@@ -1,73 +1,84 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SimulationManager : MonoBehaviour
 {
-    [Header("Condiciones de término")]
-    [SerializeField] private DropZone dropZone;
-    [SerializeField] private float maxTimeSeconds = 180f;
+    [Header("Fin de simulación")]
+    [SerializeField] private float maxExecutionTime = 120f; // segundos
+    [SerializeField] private string remainingBoxTag = "Box";     // cajas sin ordenar
+    [SerializeField] private string stackedBoxTag = "Stacked";   // cajas ya apiladas (solo por claridad)
 
     [Header("Métricas")]
-    [SerializeField] private float cellSize = 1f;
-
-    [Header("Debug/Estado")]
-    [SerializeField] private string boxTag = "Box";
+    [SerializeField] private bool stopPlayModeWhenFinished = true;
 
     private float startTime;
-    private bool ended;
-
-    private int totalBoxes; 
+    private bool finished;
 
     void Start()
     {
         startTime = Time.time;
 
-        GameObject[] boxes = GameObject.FindGameObjectsWithTag(boxTag);
-        totalBoxes = (boxes != null) ? boxes.Length : 0;
+        // Debug 
+        int totalAtStart = GameObject.FindGameObjectsWithTag(remainingBoxTag).Length
+                         + GameObject.FindGameObjectsWithTag(stackedBoxTag).Length;
 
-        Debug.Log($"[SimulationManager] Cajas detectadas al inicio: {totalBoxes}");
-
-        var trackers = FindObjectsByType<RobotMovementTracker>(FindObjectsSortMode.None);
-        for (int i = 0; i < trackers.Length; i++)
-        {
-            trackers[i].SetCellSize(cellSize);
-        }
+        Debug.Log($"[SimulationManager] Inicio. Total cajas detectadas aprox: {totalAtStart}");
     }
 
     void Update()
     {
-        if (ended) return;
+        if (finished) return;
 
         float elapsed = Time.time - startTime;
 
-        bool allStacked = (dropZone != null && dropZone.TotalPlaced >= totalBoxes && totalBoxes > 0);
-        bool timeUp = (elapsed >= maxTimeSeconds);
-
-        if (allStacked || timeUp)
+        // Condición 1: tiempo máximo
+        if (elapsed >= maxExecutionTime)
         {
-            EndSimulation(allStacked, elapsed);
+            FinishSimulation("Tiempo máximo alcanzado");
+            return;
+        }
+
+        int remaining = GameObject.FindGameObjectsWithTag(remainingBoxTag).Length;
+
+        if (remaining == 0)
+        {
+            FinishSimulation("Todas las cajas fueron organizadas");
         }
     }
 
-    private void EndSimulation(bool allStacked, float elapsed)
+    private void FinishSimulation(string reason)
     {
-        ended = true;
+        finished = true;
 
-        int totalMoves = 0;
+        float totalTime = Time.time - startTime;
+
+        // Suma de movimientos (desde RobotMovementTracker)
+        RobotMovementTracker[] trackers = FindObjectsOfType<RobotMovementTracker>();
         float totalDistance = 0f;
+        int totalSteps = 0;
 
-        var trackers = FindObjectsByType<RobotMovementTracker>(FindObjectsSortMode.None);
         for (int i = 0; i < trackers.Length; i++)
         {
-            totalMoves += trackers[i].Moves;
             totalDistance += trackers[i].Distance;
+            totalSteps += trackers[i].Moves;
         }
 
-        Debug.Log("=== SIMULATION END ===");
-        Debug.Log(allStacked
-            ? $"FIN: Todas las cajas apiladas (<=5). Tiempo: {elapsed:F2}s (Placed: {dropZone.TotalPlaced}/{totalBoxes})"
-            : $"FIN: Tiempo máximo alcanzado. Tiempo: {elapsed:F2}s (Placed: {(dropZone != null ? dropZone.TotalPlaced : 0)}/{totalBoxes})");
-        Debug.Log($"Movimientos totales: {totalMoves}");
-        Debug.Log($"Distancia total: {totalDistance:F2} unidades");
+        Debug.Log("========================================");
+        Debug.Log($"[SimulationManager] FIN: {reason}");
+        Debug.Log($"[SimulationManager] Tiempo total (s): {totalTime:F2}");
+        Debug.Log($"[SimulationManager] Robots: {trackers.Length}");
+        Debug.Log($"[SimulationManager] Distancia total recorrida: {totalDistance:F2}");
+        Debug.Log($"[SimulationManager] Pasos/movimientos totales: {totalSteps}");
+        Debug.Log("========================================");
 
+        if (stopPlayModeWhenFinished)
+        {
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#else
+            
+            // Application.Quit();
+#endif
+        }
     }
 }
