@@ -36,6 +36,7 @@ public class RobotAgent : MonoBehaviour
     private float baseSpeed;
 
     private bool placedThisTrip;
+    private GameObject carriedBox;
 
     void Awake()
     {
@@ -56,6 +57,9 @@ public class RobotAgent : MonoBehaviour
 
         ApplyBasicRobotAvoidance();
 
+        // =======================
+        // SI YA TRAE CAJA -> ENTREGAR
+        // =======================
         if (boxCarrier.HasBox)
         {
             if (dropZone == null) return;
@@ -63,9 +67,6 @@ public class RobotAgent : MonoBehaviour
             if (!hasReservedSpot)
             {
                 reservedSpot = dropZone.ReserveNextSpot();
-
-                reservedSpot += new Vector3(Random.Range(-0.35f, 0.35f), 0f, Random.Range(-0.35f, 0.35f));
-
                 hasReservedSpot = true;
                 placedThisTrip = false;
 
@@ -84,8 +85,20 @@ public class RobotAgent : MonoBehaviour
             {
                 if (!placedThisTrip)
                 {
+                    // Suelta la caja en el spot
                     boxCarrier.Drop(reservedSpot);
-                    dropZone.RegisterPlaced();   
+
+                    if (carriedBox != null)
+                    {
+                        BoxStacking stacker = dropZone.GetComponent<BoxStacking>();
+                        if (stacker != null)
+                        {
+                            stacker.TryStackBox(carriedBox);
+                        }
+                        carriedBox = null;
+                    }
+
+                    dropZone.RegisterPlaced();
                     placedThisTrip = true;
                 }
 
@@ -97,6 +110,9 @@ public class RobotAgent : MonoBehaviour
             return;
         }
 
+        // =======================
+        // SI NO TRAE CAJA -> BUSCAR / RECOGER
+        // =======================
         scanTimer += Time.deltaTime;
         if (scanTimer >= scanInterval)
         {
@@ -121,6 +137,8 @@ public class RobotAgent : MonoBehaviour
                 bool picked = boxCarrier.Pickup(targetBox);
                 if (picked)
                 {
+                    carriedBox = targetBox;
+
                     hasReservedSpot = false;
                     placedThisTrip = false;
                     agent.ResetPath();
@@ -143,6 +161,9 @@ public class RobotAgent : MonoBehaviour
             return;
         }
 
+        // =======================
+        // WANDER SI NO HAY CAJA
+        // =======================
         repathTimer += Time.deltaTime;
 
         if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)

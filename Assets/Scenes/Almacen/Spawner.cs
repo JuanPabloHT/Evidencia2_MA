@@ -17,7 +17,8 @@ public class Spawner : MonoBehaviour
     [SerializeField] private GameObject boxPrefab;
     [SerializeField] private GameObject montacargasPrefab;
     [SerializeField] private int nMontacargas = 5;
-    [SerializeField] private DropZone dropZone;
+
+    [SerializeField] private DropZone[] dropZones;
 
     void Start()
     {
@@ -55,42 +56,46 @@ public class Spawner : MonoBehaviour
     }
 
     private void SpawnMontacargas()
-{
-    int spawned = 0;
-    int attempts = 0;
-
-    while (spawned < nMontacargas && attempts < nMontacargas * 40)
     {
-        attempts++;
+        int spawned = 0;
+        int attempts = 0;
 
-        Vector3 randomPos = GetRandomPositionInBounds();
-
-        if (!NavMesh.SamplePosition(randomPos, out NavMeshHit hit, 5f, NavMesh.AllAreas))
-            continue;
-
-        Vector3 navPos = hit.position;
-
-        if (Physics.CheckSphere(navPos, checkRadius, anaquelLayer))
-            continue;
-
-        GameObject montacargas = Instantiate(montacargasPrefab, navPos, Quaternion.identity);
-
-        // === TRACKER PARA MÉTRICAS ===
-        RobotMovementTracker tracker = montacargas.GetComponent<RobotMovementTracker>();
-        if (tracker == null) tracker = montacargas.AddComponent<RobotMovementTracker>();
-
-        // === ROBOT AGENT ===
-        RobotAgent ra = montacargas.GetComponent<RobotAgent>();
-        if (ra == null) ra = montacargas.AddComponent<RobotAgent>();
-
-        if (dropZone != null)
+        while (spawned < nMontacargas && attempts < nMontacargas * 40)
         {
-            ra.SetDropZone(dropZone);
-        }
+            attempts++;
 
-        spawned++;
+            Vector3 randomPos = GetRandomPositionInBounds();
+
+            if (!NavMesh.SamplePosition(randomPos, out NavMeshHit hit, 5f, NavMesh.AllAreas))
+                continue;
+
+            Vector3 navPos = hit.position;
+
+            if (Physics.CheckSphere(navPos, checkRadius, anaquelLayer))
+                continue;
+
+            GameObject montacargas = Instantiate(montacargasPrefab, navPos, Quaternion.identity);
+
+            // === TRACKER PARA MÉTRICAS ===
+            RobotMovementTracker tracker = montacargas.GetComponent<RobotMovementTracker>();
+            if (tracker == null) tracker = montacargas.AddComponent<RobotMovementTracker>();
+
+            // === ROBOT AGENT ===
+            RobotAgent ra = montacargas.GetComponent<RobotAgent>();
+            if (ra == null) ra = montacargas.AddComponent<RobotAgent>();
+
+            if (dropZones != null && dropZones.Length > 0)
+            {
+                DropZone assigned = dropZones[spawned % dropZones.Length];
+                if (assigned != null)
+                {
+                    ra.SetDropZone(assigned);
+                }
+            }
+
+            spawned++;
+        }
     }
-}
 
     private void SpawnAnaquelesInGrid()
     {
