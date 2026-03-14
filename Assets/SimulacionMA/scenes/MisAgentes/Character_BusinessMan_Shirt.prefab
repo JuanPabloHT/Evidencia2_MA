@@ -550,10 +550,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.3
   m_Height: 2
   m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!114 &8044020702492496944
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -569,11 +569,8 @@ MonoBehaviour:
   id: 0
   posicion: {x: 0, y: 0, z: 0}
   navAgent: {fileID: 0}
-  semaforoAsociado: {fileID: 0}
   radioDePaseo: 20
   velocidadCaminar: 2
-  velocidadCorrer: 5
-  estadoActual: 0
   animator: {fileID: 0}
 --- !u!195 &5500544768673183275
 NavMeshAgent:

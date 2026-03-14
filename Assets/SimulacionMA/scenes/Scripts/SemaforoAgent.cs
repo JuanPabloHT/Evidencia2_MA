@@ -1,139 +1,62 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class SemaforoAgent : Agent
 {
-    public enum EstadoSemaforo { Verde, Amarillo, Rojo }
-    public EstadoSemaforo estadoActual;
+public enum EstadoSemaforo { Verde, Amarillo, Rojo }
+public EstadoSemaforo estadoActual = EstadoSemaforo.Rojo;
 
-    [Header("Configuración de Intersección")]
-    [Tooltip("Marca esta casilla para que el semáforo cuente el tiempo")]
-    public bool esMaestro = true;
-    [Tooltip("Déjalo vacío si el semáforo está solo en la esquina")]
-    public SemaforoAgent semaforoCruzado; 
+[Header("Visuales y Barreras")]
+public GameObject luzVerde;
+public GameObject luzAmarilla;
+public GameObject luzRoja;
+public Collider barreraCoches;
+public List<Collider> barrerasPeatones = new List<Collider>();
 
-    [Header("Tiempos (En Segundos)")]
-    public float tiempoVerde = 10f;
-    public float tiempoAmarillo = 3f;
-    public float tiempoRojo = 8f; 
-    
-    private float temporizador = 0f;
-    private int faseActual = 0; 
+public int cantidadVehiculos = 0;
+public int cantidadPeatones = 0;
 
-    void Start()
-    {
-        if (esMaestro)
-        {
-            estadoActual = EstadoSemaforo.Verde;
-            if (semaforoCruzado != null) 
-            {
-                semaforoCruzado.estadoActual = EstadoSemaforo.Rojo;
-            }
-        }
-        else
-        {
-            estadoActual = EstadoSemaforo.Rojo;
-        }
-    }
+void Start()
+{
+ActualizarFisicaYVisuales();
+}
 
-    protected override void Update()
-    {
-        base.Update();
-        Percibir();
-        Actuar();
-    }
+public void CambiarEstado(EstadoSemaforo nuevoEstado)
+{
+if (estadoActual != nuevoEstado)
+{
+estadoActual = nuevoEstado;
+ActualizarFisicaYVisuales();
+}
+}
 
-    public override void Percibir() { }
+private void ActualizarFisicaYVisuales()
+{
+if(luzVerde != null) luzVerde.SetActive(estadoActual == EstadoSemaforo.Verde);
+if(luzAmarilla != null) luzAmarilla.SetActive(estadoActual == EstadoSemaforo.Amarillo);
+if(luzRoja != null) luzRoja.SetActive(estadoActual == EstadoSemaforo.Rojo);
 
-    public override void Actuar() 
-    { 
-        if (esMaestro)
-        {
-            if (semaforoCruzado != null)
-            {
-                DirigirCruceSincronizado(); 
-            }
-            else
-            {
-                DirigirSemaforoSolitario(); 
-            }
-        }
-    }
+if (barreraCoches != null)
+{
+barreraCoches.enabled = (estadoActual == EstadoSemaforo.Rojo || estadoActual == EstadoSemaforo.Amarillo);
+}
 
-    private void DirigirSemaforoSolitario()
-    {
-        temporizador += Time.deltaTime;
+foreach (Collider barrera in barrerasPeatones)
+{
+if (barrera != null)
+{
+barrera.enabled = (estadoActual == EstadoSemaforo.Verde || estadoActual == EstadoSemaforo.Amarillo);
+}
+}
+}
 
-        if (faseActual == 0) 
-        {
-            if (temporizador >= tiempoVerde)
-            {
-                faseActual = 1; temporizador = 0f;
-                estadoActual = EstadoSemaforo.Amarillo;
-            }
-        }
-        else if (faseActual == 1) 
-        {
-            if (temporizador >= tiempoAmarillo)
-            {
-                faseActual = 2; temporizador = 0f;
-                estadoActual = EstadoSemaforo.Rojo;
-            }
-        }
-        else if (faseActual == 2) 
-        {
-            if (temporizador >= tiempoRojo)
-            {
-                faseActual = 0; temporizador = 0f;
-                estadoActual = EstadoSemaforo.Verde;
-            }
-        }
-    }
+public void RegistrarVehiculo() { cantidadVehiculos++; }
+public void LiberarVehiculo() { cantidadVehiculos--; if(cantidadVehiculos < 0) cantidadVehiculos = 0; }
+public void RegistrarPeaton() { cantidadPeatones++; }
+public void LiberarPeaton() { cantidadPeatones--; if(cantidadPeatones < 0) cantidadPeatones = 0; }
 
-    private void DirigirCruceSincronizado()
-    {
-        temporizador += Time.deltaTime;
-
-        if (faseActual == 0) 
-        {
-            if (temporizador >= tiempoVerde)
-            {
-                faseActual = 1; temporizador = 0f;
-                estadoActual = EstadoSemaforo.Amarillo;
-            }
-        }
-        else if (faseActual == 1) 
-        {
-            if (temporizador >= tiempoAmarillo)
-            {
-                faseActual = 2; temporizador = 0f;
-                estadoActual = EstadoSemaforo.Rojo;
-                semaforoCruzado.estadoActual = EstadoSemaforo.Verde; 
-            }
-        }
-        else if (faseActual == 2) 
-        {
-            if (temporizador >= semaforoCruzado.tiempoVerde) 
-            {
-                faseActual = 3; temporizador = 0f;
-                semaforoCruzado.estadoActual = EstadoSemaforo.Amarillo;
-            }
-        }
-        else if (faseActual == 3) 
-        {
-            if (temporizador >= semaforoCruzado.tiempoAmarillo)
-            {
-                faseActual = 0; temporizador = 0f;
-                semaforoCruzado.estadoActual = EstadoSemaforo.Rojo;
-                estadoActual = EstadoSemaforo.Verde; 
-            }
-        }
-    }
-
-    public void RegistrarVehiculo() { }
-    public void LiberarVehiculo() { }
-    public void RegistrarPeaton() { }
-    public void LiberarPeaton() { }
-
-    public override void EnviarMensaje(string mensaje, Agent receptor) { }
-    public override void RecibirMensaje(string mensaje, Agent emisor) { }
+public override void Percibir() { }
+public override void Actuar() { }
+public override void EnviarMensaje(string mensaje, Agent receptor) { }
+public override void RecibirMensaje(string mensaje, Agent emisor) { }
 }

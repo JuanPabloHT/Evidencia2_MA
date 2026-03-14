@@ -3,22 +3,72 @@ using System.Collections.Generic;
 
 public class GestorInterseccion : MonoBehaviour
 {
-public float radioBusqueda = 15f;
-public List<SemaforoAgent> semaforosCercanos = new List<SemaforoAgent>();
+[Header("Semáforos de la Intersección (Asignar Manualmente)")]
+public List<SemaforoAgent> ejeNorteSur = new List<SemaforoAgent>();
+public List<SemaforoAgent> ejeEsteOeste = new List<SemaforoAgent>();
 
-[ContextMenu("Vincular Semaforos")]
-public void VincularSemaforos()
+[Header("Tiempos (En Segundos)")]
+public float tiempoVerde = 10f;
+public float tiempoAmarillo = 3f;
+[Tooltip("Tiempo de seguridad con todos en rojo")]
+public float tiempoRojoLimpieza = 2f; 
+
+private float temporizador = 0f;
+private int faseActual = 0;
+
+void Update()
 {
-semaforosCercanos.Clear();
-SemaforoAgent[] todosLosSemaforos = FindObjectsOfType<SemaforoAgent>();
-foreach (SemaforoAgent semaforo in todosLosSemaforos)
+GestionarTrafico();
+}
+
+private void GestionarTrafico()
 {
-float distancia = Vector3.Distance(transform.position, semaforo.transform.position);
-if (distancia <= radioBusqueda)
+temporizador += Time.deltaTime;
+
+if (faseActual == 0) 
 {
-semaforosCercanos.Add(semaforo);
+CambiarEstadoGrupo(ejeNorteSur, SemaforoAgent.EstadoSemaforo.Verde);
+CambiarEstadoGrupo(ejeEsteOeste, SemaforoAgent.EstadoSemaforo.Rojo);
+if (temporizador >= tiempoVerde) { faseActual = 1; temporizador = 0f; }
+}
+else if (faseActual == 1) 
+{
+CambiarEstadoGrupo(ejeNorteSur, SemaforoAgent.EstadoSemaforo.Amarillo);
+if (temporizador >= tiempoAmarillo) { faseActual = 2; temporizador = 0f; }
+}
+else if (faseActual == 2) 
+{
+CambiarEstadoGrupo(ejeNorteSur, SemaforoAgent.EstadoSemaforo.Rojo);
+CambiarEstadoGrupo(ejeEsteOeste, SemaforoAgent.EstadoSemaforo.Rojo);
+if (temporizador >= tiempoRojoLimpieza) { faseActual = 3; temporizador = 0f; }
+}
+else if (faseActual == 3) 
+{
+CambiarEstadoGrupo(ejeNorteSur, SemaforoAgent.EstadoSemaforo.Rojo);
+CambiarEstadoGrupo(ejeEsteOeste, SemaforoAgent.EstadoSemaforo.Verde);
+if (temporizador >= tiempoVerde) { faseActual = 4; temporizador = 0f; }
+}
+else if (faseActual == 4) 
+{
+CambiarEstadoGrupo(ejeEsteOeste, SemaforoAgent.EstadoSemaforo.Amarillo);
+if (temporizador >= tiempoAmarillo) { faseActual = 5; temporizador = 0f; }
+}
+else if (faseActual == 5) 
+{
+CambiarEstadoGrupo(ejeNorteSur, SemaforoAgent.EstadoSemaforo.Rojo);
+CambiarEstadoGrupo(ejeEsteOeste, SemaforoAgent.EstadoSemaforo.Rojo);
+if (temporizador >= tiempoRojoLimpieza) { faseActual = 0; temporizador = 0f; }
 }
 }
-Debug.Log("Semáforos vinculados: " + semaforosCercanos.Count);
+
+private void CambiarEstadoGrupo(List<SemaforoAgent> grupo, SemaforoAgent.EstadoSemaforo estado)
+{
+foreach (SemaforoAgent semaforo in grupo)
+{
+if (semaforo != null)
+{
+semaforo.CambiarEstado(estado);
+}
+}
 }
 }
